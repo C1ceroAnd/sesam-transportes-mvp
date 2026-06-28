@@ -1,109 +1,109 @@
 <!--
-SYNC IMPACT REPORT
-==================
-Version change: [TEMPLATE] → 1.0.0 (initial ratification)
-Modified principles: None (first authoring from template)
-Added sections: Core Principles (5), Technology Stack, Development Workflow, Governance
-Removed sections: None
-Templates requiring updates:
-  - .specify/templates/plan-template.md ✅ aligned (Constitution Check section present, no outdated references)
-  - .specify/templates/spec-template.md ✅ aligned (user story + requirements structure compatible)
-  - .specify/templates/tasks-template.md ✅ aligned (phase structure compatible with MVP-First principle)
-Follow-up TODOs:
-  - TODO(RATIFICATION_DATE): Date set to first-use date (2026-06-27); confirm with project owner if a
-    prior decision date should be used instead.
+RELATÓRIO DE IMPACTO DE SINCRONIZAÇÃO
+======================================
+Mudança de versão: [TEMPLATE] → 1.0.0 (ratificação inicial)
+Princípios modificados: Nenhum (primeira criação a partir do template)
+Seções adicionadas: Princípios Fundamentais (5), Stack Tecnológico, Fluxo de Desenvolvimento, Governança
+Seções removidas: Nenhuma
+Templates que precisam de atualização:
+  - .specify/templates/plan-template.md ✅ alinhado (seção de Verificação da Constituição presente, sem referências desatualizadas)
+  - .specify/templates/spec-template.md ✅ alinhado (estrutura de histórias de usuário + requisitos compatível)
+  - .specify/templates/tasks-template.md ✅ alinhado (estrutura de fases compatível com o princípio MVP-First)
+TODOs de acompanhamento:
+  - TODO(DATA_RATIFICACAO): Data definida como data de primeiro uso (2026-06-27); confirmar com o dono do projeto se
+    uma data de decisão anterior deve ser usada.
 -->
 
-# Sesam Transportes MVP Constitution
+# Constituição do MVP SESAM Transportes
 
-## Core Principles
+## Princípios Fundamentais
 
 ### I. MVP-First
 
-Every feature MUST be scoped to deliver the smallest independently testable slice of value.
-No feature may be built for hypothetical future use. Scope MUST be validated against the
-active feature specification before implementation begins. Premature abstractions, generic
-frameworks, and "we might need this later" additions are prohibited.
+Toda funcionalidade DEVE ser delimitada para entregar a menor fatia de valor testável de forma independente.
+Nenhuma funcionalidade pode ser construída para uso hipotético futuro. O escopo DEVE ser validado contra a
+especificação da funcionalidade ativa antes do início da implementação. Abstrações prematuras, frameworks
+genéricos e adições do tipo "podemos precisar disso depois" são proibidos.
 
-**Why**: This is an MVP; speed-to-validation outweighs architectural elegance. Unused code
-is a liability that slows delivery and obscures the product's real requirements.
+**Por quê**: Este é um MVP; velocidade de validação supera elegância arquitetural. Código não utilizado
+é um passivo que atrasa a entrega e obscurece os requisitos reais do produto.
 
 ### II. API-First
 
-All communication between frontend and backend MUST pass through explicitly defined API
-contracts (documented in `specs/[feature]/contracts/`). The contract is the source of truth;
-implementation conforms to the contract, not the reverse. Contracts MUST be defined before
-implementation begins.
+Toda comunicação entre frontend e backend DEVE passar por contratos de API explicitamente definidos
+(documentados em `specs/[funcionalidade]/contracts/`). O contrato é a fonte da verdade;
+a implementação está em conformidade com o contrato, não o inverso. Os contratos DEVEM ser definidos antes
+do início da implementação.
 
-**Why**: Transportation management workflows span multiple surfaces (driver apps, dispatch
-dashboards, admin panels). Clear contracts enable parallel development and prevent coupling.
+**Por quê**: Os fluxos de gerenciamento de transporte abrangem múltiplas superfícies (aplicativos de motorista,
+painéis de despacho, painéis administrativos). Contratos claros permitem desenvolvimento paralelo e evitam acoplamento.
 
-### III. Test-Driven for Critical Logic
+### III. Test-Driven para Lógica Crítica
 
-Transportation business logic (routing, pricing, scheduling, status transitions) MUST be
-covered by tests written before implementation. The Red-Green-Refactor cycle is mandatory
-for these domains. UI glue code and configuration do not require upfront tests.
+A lógica de negócio de transporte (roteamento, precificação, agendamento, transições de estado) DEVE ser
+coberta por testes escritos antes da implementação. O ciclo Red-Green-Refactor é obrigatório
+para esses domínios. Código de interface e configuração não requerem testes antecipados.
 
-**Why**: Errors in routing or scheduling have real-world consequences (missed pickups,
-incorrect charges). Tests encode the business rules explicitly and prevent regressions.
+**Por quê**: Erros em roteamento ou agendamento têm consequências no mundo real (embarques perdidos,
+cobranças incorretas). Os testes codificam as regras de negócio explicitamente e previnem regressões.
 
-### IV. Data Integrity First
+### IV. Integridade de Dados Primeiro
 
-Every entity that enters persistent storage MUST be validated at the application boundary
-(not only at the UI). Status transitions for transport operations (e.g., order → dispatched
-→ in-transit → delivered) MUST be enforced as explicit state machines; free-form status
-updates are prohibited.
+Toda entidade que entra no armazenamento persistente DEVE ser validada na fronteira da aplicação
+(não apenas na UI). As transições de estado para operações de transporte (ex.: pedido → despachado
+→ em trânsito → entregue) DEVEM ser implementadas como máquinas de estado explícitas; atualizações
+de status de forma livre são proibidas.
 
-**Why**: Transportation data drives logistics and billing decisions. Corrupt or inconsistent
-state is harder to recover from than a rejected write.
+**Por quê**: Dados de transporte impulsionam decisões de logística e faturamento. Estado corrompido ou inconsistente
+é mais difícil de recuperar do que uma escrita rejeitada.
 
-### V. Simplicity — No Speculative Complexity
+### V. Simplicidade — Sem Complexidade Especulativa
 
-Three similar code paths are preferable to a premature abstraction. Repository patterns,
-event buses, and microservice splits are prohibited until a concrete, current need justifies
-them. Complexity MUST be documented in the plan's Complexity Tracking table with a
-justification and the simpler alternative that was rejected.
+Três caminhos de código similares são preferíveis a uma abstração prematura. Padrões de repositório,
+barramentos de eventos e divisões de microsserviços são proibidos até que uma necessidade concreta e atual os justifique.
+A complexidade DEVE ser documentada na tabela de Rastreamento de Complexidade do plano com uma
+justificativa e a alternativa mais simples que foi rejeitada.
 
-**Why**: MVPs rarely survive contact with production unchanged. Premature architecture
-locks in assumptions that turn out to be wrong and slows pivoting.
+**Por quê**: MVPs raramente sobrevivem ao contato com a produção sem mudanças. Arquitetura prematura
+bloqueia suposições que se revelam erradas e retarda a capacidade de pivotar.
 
-## Technology Stack
+## Stack Tecnológico
 
-- **Runtime**: Node.js (version per `package.json` engines field or latest LTS)
-- **Language**: JavaScript (TypeScript permitted if team already uses it; do not migrate
-  mid-project)
-- **Testing**: Jest (preferred) or Vitest — one framework, not both
-- **API style**: REST unless a specific feature justifies GraphQL; justify in plan.md
-- **Database**: MUST be decided per feature; default to a single relational store
-  (PostgreSQL or SQLite) unless a documented need for another store exists
-- **Frontend**: Framework choice MUST be recorded in the first feature's plan.md and
-  locked for the project duration
+- **Runtime**: Node.js (versão conforme campo `engines` do `package.json` ou LTS mais recente)
+- **Linguagem**: JavaScript (TypeScript permitido se a equipe já o utiliza; não migrar
+  no meio do projeto)
+- **Testes**: Jest (preferido) ou Vitest — um framework, não ambos
+- **Estilo de API**: REST a menos que uma funcionalidade específica justifique GraphQL; justificar em `plan.md`
+- **Banco de dados**: DEVE ser decidido por funcionalidade; padrão para um único armazenamento relacional
+  (PostgreSQL ou SQLite) a menos que exista uma necessidade documentada para outro armazenamento
+- **Frontend**: A escolha do framework DEVE ser registrada no `plan.md` da primeira funcionalidade e
+  bloqueada para a duração do projeto
 
-## Development Workflow
+## Fluxo de Desenvolvimento
 
-- Features MUST follow the speckit workflow: `/speckit-specify` → `/speckit-plan` →
+- As funcionalidades DEVEM seguir o fluxo do speckit: `/speckit-specify` → `/speckit-plan` →
   `/speckit-tasks` → `/speckit-implement`
-- Every PR MUST reference the feature spec and include a Constitution Check result
-- Specs live under `specs/[###-feature-name]/`; source code lives at the repository root
-- Commits MUST be atomic: one logical change per commit; squash before merge if needed
-- No force-pushes to `main`; use feature branches
+- Todo PR DEVE referenciar a especificação da funcionalidade e incluir o resultado da Verificação da Constituição
+- As especificações ficam em `specs/[###-nome-da-funcionalidade]/`; o código-fonte fica na raiz do repositório
+- Os commits DEVEM ser atômicos: uma mudança lógica por commit; fazer squash antes do merge se necessário
+- Sem force-pushes para `main`; usar branches de funcionalidade
 
-## Governance
+## Governança
 
-This constitution supersedes all other development practices and informal agreements.
-Amendments MUST:
-1. Identify the principle or section being changed and the version bump type
-2. Document why the current constitution is insufficient
-3. Be applied via `/speckit-constitution` and committed with message
-   `docs: amend constitution to vX.Y.Z (<reason>)`
+Esta constituição substitui todas as outras práticas de desenvolvimento e acordos informais.
+As emendas DEVEM:
+1. Identificar o princípio ou seção sendo alterado e o tipo de incremento de versão
+2. Documentar por que a constituição atual é insuficiente
+3. Ser aplicadas via `/speckit-constitution` e commitadas com a mensagem
+   `docs: amend constitution to vX.Y.Z (<motivo>)`
 
-**Versioning policy**:
-- MAJOR: Principle removed, renamed, or fundamentally redefined
-- MINOR: New principle or section added; material guidance expansion
-- PATCH: Wording clarifications, typo fixes, non-semantic refinements
+**Política de versionamento**:
+- MAJOR: Princípio removido, renomeado ou fundamentalmente redefinido
+- MINOR: Novo princípio ou seção adicionado; expansão material de orientação
+- PATCH: Esclarecimentos de redação, correções de erros tipográficos, refinamentos não semânticos
 
-All PRs and code reviews MUST verify compliance with the five Core Principles.
-Complexity violations require entries in the plan's Complexity Tracking table before
-the PR can be merged.
+Todos os PRs e revisões de código DEVEM verificar conformidade com os cinco Princípios Fundamentais.
+Violações de complexidade requerem entradas na tabela de Rastreamento de Complexidade do plano antes
+que o PR possa ser mergeado.
 
-**Version**: 1.0.0 | **Ratified**: 2026-06-27 | **Last Amended**: 2026-06-27
+**Versão**: 1.0.0 | **Ratificado**: 2026-06-27 | **Última Emenda**: 2026-06-27

@@ -1,37 +1,37 @@
-# Specification Quality Checklist: Gerenciamento de Transporte de Pacientes SESAM
+# Checklist de Qualidade da Especificação: Gerenciamento de Transporte de Pacientes SESAM
 
-**Purpose**: Validate specification completeness and quality before proceeding to planning
-**Created**: 2026-06-27
-**Feature**: [spec.md](../spec.md)
+**Propósito**: Validar completude e qualidade da especificação antes de prosseguir para o planejamento
+**Criado em**: 2026-06-27
+**Funcionalidade**: [spec.md](../spec.md)
 
-## Content Quality
+## Qualidade do Conteúdo
 
-- [x] No implementation details (languages, frameworks, APIs)
-- [x] Focused on user value and business needs
-- [x] Written for non-technical stakeholders
-- [x] All mandatory sections completed
+- [x] Sem detalhes de implementação (linguagens, frameworks, APIs)
+- [x] Focado em valor para o usuário e necessidades de negócio
+- [x] Escrito para partes interessadas não técnicas
+- [x] Todas as seções obrigatórias concluídas
 
-## Requirement Completeness
+## Completude dos Requisitos
 
-- [x] No [NEEDS CLARIFICATION] markers remain
-- [x] Requirements are testable and unambiguous
-- [x] Success criteria are measurable
-- [x] Success criteria are technology-agnostic (no implementation details)
-- [x] All acceptance scenarios are defined
-- [x] Edge cases are identified
-- [x] Scope is clearly bounded
-- [x] Dependencies and assumptions identified
+- [x] Nenhum marcador [NEEDS CLARIFICATION] permanece
+- [x] Requisitos são testáveis e sem ambiguidade
+- [x] Critérios de sucesso são mensuráveis
+- [x] Critérios de sucesso são independentes de tecnologia (sem detalhes de implementação)
+- [x] Todos os cenários de aceite estão definidos
+- [x] Casos de borda estão identificados
+- [x] Escopo está claramente delimitado
+- [x] Dependências e premissas identificadas
 
-## Feature Readiness
+## Prontidão da Funcionalidade
 
-- [x] All functional requirements have clear acceptance criteria
-- [x] User scenarios cover primary flows
-- [x] Feature meets measurable outcomes defined in Success Criteria
-- [x] No implementation details leak into specification
+- [x] Todos os requisitos funcionais possuem critérios de aceite claros
+- [x] Cenários de usuário cobrem os fluxos principais
+- [x] Funcionalidade atende aos resultados mensuráveis definidos nos Critérios de Sucesso
+- [x] Nenhum detalhe de implementação vaza para a especificação
 
-## Notes
+## Notas
 
-- All items pass. Specification is ready for `/speckit-plan`.
-- RF08 (escala rotativa) was scoped conservatively: system suggests next driver but admin makes the final selection (assumption documented).
-- RF02 (acompanhante) assumes maximum 1 acompanhante per agendamento (assumption documented).
-- RF09 (veículo) and RF08 (motorista) are modeled per-viagem, not per-frota, consistent with MVP-First principle.
+- Todos os itens aprovados. Especificação pronta para `/speckit-plan`.
+- RF08 (escala rotativa) foi delimitado de forma conservadora: o sistema sugere o próximo motorista, mas o administrativo faz a seleção final (premissa documentada).
+- RF02 (acompanhante) assume máximo de 1 acompanhante por agendamento (premissa documentada).
+- RF09 (veículo) e RF08 (motorista) são modelados por viagem, não por frota, consistente com o princípio MVP-First.

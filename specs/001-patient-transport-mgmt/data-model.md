@@ -5,7 +5,7 @@
 
 ---
 
-## Entities
+## Entidades
 
 ### Paciente
 
@@ -106,7 +106,7 @@ Vínculo entre um Paciente e uma Viagem, com todos os dados operacionais do tran
 
 ---
 
-## State Machines
+## Máquinas de Estado
 
 ### Agendamento.status_presenca
 
@@ -152,7 +152,7 @@ Vínculo entre um Paciente e uma Viagem, com todos os dados operacionais do tran
 
 ---
 
-## Relationships
+## Relacionamentos
 
 ```
 Paciente ──── 0..1 ──── Acompanhante
@@ -164,7 +164,7 @@ Paciente ──── 0..1 ──── Acompanhante
 
 ---
 
-## Capacity Calculation
+## Cálculo de Capacidade
 
 ```
 vagas_ocupadas_por_agendamento = 1 (paciente)
@@ -178,7 +178,7 @@ Agendamento só é criado se: vagas_disponiveis >= vagas_necessárias_do_agendam
 
 ---
 
-## Seed Data
+## Dados Iniciais (Seed)
 
 ```sql
 -- Motoristas (inseridos via seed inicial)

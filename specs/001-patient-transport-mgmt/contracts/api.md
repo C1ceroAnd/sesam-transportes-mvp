@@ -1,9 +1,9 @@
 # API Contracts: Gerenciamento de Transporte de Pacientes SESAM
 
 **Feature**: 001-patient-transport-mgmt
-**Style**: REST over HTTP/JSON
+**Estilo**: REST sobre HTTP/JSON
 **Base URL**: `/api`
-**Auth**: Session cookie (`connect.sid`). Todas as rotas exceto `/api/auth/login` exigem sessão ativa. Requisições sem sessão retornam `401`.
+**Autenticação**: Cookie de sessão (`connect.sid`). Todas as rotas exceto `/api/auth/login` exigem sessão ativa. Requisições sem sessão retornam `401`.
 
 ---
 

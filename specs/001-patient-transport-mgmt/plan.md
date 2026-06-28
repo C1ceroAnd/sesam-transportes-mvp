@@ -14,49 +14,49 @@ A abordagem técnica é: backend REST (Node.js/Express + SQLite) + frontend SPA 
 
 ---
 
-## Technical Context
+## Contexto Técnico
 
-**Language/Version**: JavaScript (Node.js 20 LTS para backend; React 18 para frontend)
+**Linguagem/Versão**: JavaScript (Node.js 20 LTS para backend; React 18 para frontend)
 
-**Primary Dependencies**:
+**Dependências Principais**:
 - Backend: `express`, `better-sqlite3`, `express-session`, `bcryptjs`, `pdfkit`, `cors`
 - Frontend: `react`, `react-router-dom`, `axios`
 
-**Storage**: SQLite (arquivo único `backend/data/sesam.db`)
+**Armazenamento**: SQLite (arquivo único `backend/data/sesam.db`)
 
-**Testing**: Jest (backend — lógica de negócio: validação CPF, capacidade, máquinas de estado; frontend — componentes críticos)
+**Testes**: Jest (backend — lógica de negócio: validação CPF, capacidade, máquinas de estado; frontend — componentes críticos)
 
-**Target Platform**: Navegador web desktop (Chrome/Edge modernos); servidor Node.js local ou VPS simples
+**Plataforma Alvo**: Navegador web desktop (Chrome/Edge modernos); servidor Node.js local ou VPS simples
 
-**Project Type**: Web application (backend REST API + frontend SPA)
+**Tipo de Projeto**: Aplicação web (backend REST API + frontend SPA)
 
-**Performance Goals**: Operação fluida para 1–5 usuários simultâneos; PDF gerado em < 10 segundos; listagem de viagens em < 1 segundo
+**Metas de Desempenho**: Operação fluida para 1–5 usuários simultâneos; PDF gerado em < 10 segundos; listagem de viagens em < 1 segundo
 
-**Constraints**: Offline-capable não requerido; mobile não é requisito do MVP; deploy simplificado (sem Docker obrigatório)
+**Restrições**: Offline-capable não requerido; mobile não é requisito do MVP; deploy simplificado (sem Docker obrigatório)
 
-**Scale/Scope**: ~100 pacientes, 1 viagem/dia, 2 motoristas; operação interna para equipe administrativa da SESAM
+**Escala/Escopo**: ~100 pacientes, 1 viagem/dia, 2 motoristas; operação interna para equipe administrativa da SESAM
 
 ---
 
-## Constitution Check
+## Verificação da Constituição
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+*PORTÃO: Deve ser aprovado antes da pesquisa da Fase 0. Reavaliado após o design da Fase 1.*
 
 | Princípio | Status | Evidência |
 |-----------|--------|-----------|
-| I. MVP-First | ✅ PASS | Escopo limitado exatamente aos 13 RF do spec; sem funcionalidades adicionais |
-| II. API-First | ✅ PASS | Contratos REST definidos em `contracts/api.md` antes da implementação |
-| III. Test-Driven for Critical Logic | ✅ PASS | Testes unitários planejados para: validação CPF, capacidade de vagas, máquinas de estado de presença e retorno, cálculo de escala rotativa |
-| IV. Data Integrity First | ✅ PASS | Validação de `ponto_embarque` e `ponto_desembarque` na camada de serviço; transições de estado explícitas com pré-condições definidas no data model |
-| V. Simplicity | ✅ PASS | Sem repository pattern, event bus ou microserviços; Express direto + SQLite; sem ORM (queries SQL explícitas via better-sqlite3) |
+| I. MVP-First | ✅ APROVADO | Escopo limitado exatamente aos 13 RF do spec; sem funcionalidades adicionais |
+| II. API-First | ✅ APROVADO | Contratos REST definidos em `contracts/api.md` antes da implementação |
+| III. Test-Driven for Critical Logic | ✅ APROVADO | Testes unitários planejados para: validação CPF, capacidade de vagas, máquinas de estado de presença e retorno, cálculo de escala rotativa |
+| IV. Data Integrity First | ✅ APROVADO | Validação de `ponto_embarque` e `ponto_desembarque` na camada de serviço; transições de estado explícitas com pré-condições definidas no data model |
+| V. Simplicity | ✅ APROVADO | Sem repository pattern, event bus ou microserviços; Express direto + SQLite; sem ORM (queries SQL explícitas via better-sqlite3) |
 
-**Complexity Tracking**: Nenhuma violação — tabela não aplicável.
+**Rastreamento de Complexidade**: Nenhuma violação — tabela não aplicável.
 
 ---
 
-## Project Structure
+## Estrutura do Projeto
 
-### Documentation (this feature)
+### Documentação (esta funcionalidade)
 
 ```text
 specs/001-patient-transport-mgmt/
@@ -69,7 +69,7 @@ specs/001-patient-transport-mgmt/
 └── tasks.md             # Gerado por /speckit-tasks (ainda não criado)
 ```
 
-### Source Code (repository root)
+### Código-Fonte (raiz do repositório)
 
 ```text
 backend/
@@ -136,4 +136,4 @@ frontend/
 package.json          # Scripts de conveniência (dev, build, test)
 ```
 
-**Structure Decision**: Web application (Option 2 — backend + frontend separados). Backend em `backend/`, frontend em `frontend/`. A separação permite que os contratos de API sejam a única interface entre as camadas, conforme Princípio II da Constituição.
+**Decisão de Estrutura**: Aplicação web (Opção 2 — backend + frontend separados). Backend em `backend/`, frontend em `frontend/`. A separação permite que os contratos de API sejam a única interface entre as camadas, conforme Princípio II da Constituição.
