@@ -16,7 +16,9 @@ const agendamentosRootRoutes = require('./api/agendamentosRoot');
 const app = express();
 
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? true : process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: function(origin, callback) {
+    callback(null, true);
+  },
   credentials: true,
 }));
 
@@ -28,9 +30,9 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production' ? true : false,
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    maxAge: 8 * 60 * 60 * 1000,
+    secure: false,
+    sameSite: 'none',
+    maxAge: 24 * 60 * 60 * 1000,
   },
 }));
 
