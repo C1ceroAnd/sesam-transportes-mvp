@@ -1,8 +1,14 @@
+require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const db = require('./index');
 
-const ADMIN_LOGIN = process.env.ADMIN_LOGIN || 'Admin';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'adminTransportes';
+const ADMIN_LOGIN = process.env.ADMIN_LOGIN;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+
+if (!ADMIN_LOGIN || !ADMIN_PASSWORD) {
+  console.error('Erro: ADMIN_LOGIN e ADMIN_PASSWORD devem ser definidos no .env');
+  process.exit(1);
+}
 const SALT_ROUNDS = 10;
 
 function seed() {
