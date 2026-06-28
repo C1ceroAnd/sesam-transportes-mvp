@@ -109,9 +109,10 @@ function ViagemCard({ v, onClick }) {
   const periodo = getPeriodo(v.data);
   const barColor = vagasColor(v.vagas_ocupadas, v.capacidade_maxima);
   const pct = Math.min(100, Math.round((v.vagas_ocupadas / v.capacidade_maxima) * 100));
-  const dataFormatada = new Date(v.data + 'T12:00:00').toLocaleDateString('pt-BR', {
-    weekday: 'short', day: 'numeric', month: 'short', year: 'numeric',
-  });
+  const _d = new Date(v.data + 'T12:00:00');
+  const dataFormatada = _d.toLocaleDateString('pt-BR', {
+    weekday: 'short', day: 'numeric', month: 'short',
+  }) + ' de ' + v.data.slice(0, 4);
 
   return (
     <div

@@ -112,9 +112,10 @@ export default function ViagemDetalhe() {
   if (!viagem) return null;
 
   const passada = isViagemPassada(viagem.data);
-  const dataFormatada = new Date(viagem.data + 'T12:00:00').toLocaleDateString('pt-BR', {
-    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-  });
+  const _d = new Date(viagem.data + 'T12:00:00');
+  const dataFormatada = _d.toLocaleDateString('pt-BR', {
+    weekday: 'long', month: 'long', day: 'numeric',
+  }) + ' de ' + viagem.data.slice(0, 4);
   const barColor = vagasColor(viagem.vagas_ocupadas, viagem.capacidade_maxima);
   const pct = Math.min(100, Math.round((viagem.vagas_ocupadas / viagem.capacidade_maxima) * 100));
 
@@ -176,21 +177,19 @@ export default function ViagemDetalhe() {
       </div>
 
       {/* Add passenger button */}
-      {!passada && (
-        <div style={{ marginBottom: 16 }}>
-          <button
-            onClick={() => setShowAgendamentoForm((v) => !v)}
-            style={{
-              height: 40, padding: '0 18px',
-              background: showAgendamentoForm ? '#475569' : '#2E5FA3',
-              color: '#fff', border: 'none', borderRadius: 8,
-              fontSize: 14, fontWeight: 600, cursor: 'pointer',
-            }}
-          >
-            {showAgendamentoForm ? '✕ Fechar formulário' : '+ Agendar Paciente'}
-          </button>
-        </div>
-      )}
+      <div style={{ marginBottom: 16 }}>
+        <button
+          onClick={() => setShowAgendamentoForm((v) => !v)}
+          style={{
+            height: 40, padding: '0 18px',
+            background: showAgendamentoForm ? '#475569' : '#2E5FA3',
+            color: '#fff', border: 'none', borderRadius: 8,
+            fontSize: 14, fontWeight: 600, cursor: 'pointer',
+          }}
+        >
+          {showAgendamentoForm ? '✕ Fechar formulário' : '+ Agendar Paciente'}
+        </button>
+      </div>
 
       {/* Agendamento form — floating card */}
       {showAgendamentoForm && (
