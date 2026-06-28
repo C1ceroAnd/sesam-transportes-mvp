@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bash .specify/scripts/bash/setup-plan.sh --json 2>&1)",
+      "Bash(.specify/scripts/bash/setup-tasks.sh *)",
+      "Bash(.specify/scripts/bash/check-prerequisites.sh *)",
+      "Bash(git -C /Users/ciceroandradesantos/Documents/PROJECTS/sesam-transportes-mvp rev-parse --git-dir)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(node *)",
+      "Bash(npx jest *)",
+      "Bash(npm test *)",
+      "Bash(curl -s -b /tmp/sesam-e2e-cookies.txt http://localhost:3001/api/pacientes)",
+      "Bash(python3 -c ' *)",
+      "Bash(curl -s -b /tmp/sesam-e2e-cookies.txt http://localhost:3001/api/viagens/1)",
+      "Bash(curl -s -b /tmp/sesam-e2e-cookies.txt -X POST http://localhost:3001/api/viagens/5/agendamentos -H 'Content-Type: application/json' -d '{\"paciente_id\":2,\"motivo_deslocamento\":\"Consulta\",\"ponto_desembarque_teresina\":\"H.U.\",\"destino_consulta\":\"HUPI\"}')",
+      "Bash(pkill -f \"node server.js\")"
+    ]
+  }
+}
