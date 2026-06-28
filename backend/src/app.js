@@ -15,10 +15,10 @@ const agendamentosRootRoutes = require('./api/agendamentosRoot');
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 app.use(cors({
-  origin: function(origin, callback) {
-    callback(null, true);
-  },
+  origin: true,
   credentials: true,
 }));
 
@@ -30,7 +30,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: false,
+    secure: true,
     sameSite: 'none',
     maxAge: 24 * 60 * 60 * 1000,
   },
