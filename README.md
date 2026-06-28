@@ -7,32 +7,39 @@
 ![License](https://img.shields.io/badge/Licença-MIT-green)
 ![Status](https://img.shields.io/badge/Status-MVP%20Completo-blue)
 
-Sistema web administrativo desenvolvido para a **SESAM** (Secretaria de Saúde Municipal) para gerenciar o transporte diário de pacientes até Teresina para consultas médicas. Permite cadastrar pacientes, criar viagens, controlar agendamentos com validação de capacidade (28 vagas), registrar presença e status de retorno, e gerar relatórios PDF por paciente.
+Sistema web administrativo desenvolvido para a **SESAM** (Secretaria Municipal de Saúde — Piauí) gerenciar o transporte diário de pacientes do município de **Piripiri** até **Teresina** para consultas médicas. O sistema cobre o ciclo completo: cadastro de pacientes, criação de viagens, agendamento com validação de capacidade (28 vagas), controle de presença, registro de retorno e geração de relatórios PDF.
+
+---
+
+## Contexto Acadêmico
+
+Este projeto foi desenvolvido como **trabalho final** da disciplina **Tópicos Especiais em Computação**, utilizando a metodologia **Specification-Driven Development (SDD)** via **SpecKit** — um pipeline de desenvolvimento orientado por especificação que garante rastreabilidade completa entre requisitos e código.
+
+O sistema resolve um problema real: o setor de transportes da SESAM controla diariamente quais pacientes embarcam no veículo que parte de Piripiri rumo a Teresina, e precisava substituir planilhas manuais por uma ferramenta web simples e auditável.
 
 ---
 
 ## Visão Geral do Sistema
 
-O sistema é dividido em duas telas principais:
-
-**Pacientes**
-- Listagem com busca por nome ou CPF
-- Cadastro com validação de CPF (algoritmo de dígitos verificadores)
-- Associação de acompanhante (com ou sem ocupação de vaga)
-- Definição de prioridade: Alta (oncológico) ou Normal
-- Geração de relatório PDF com histórico completo de viagens
+O sistema possui duas telas principais acessadas por sidebar:
 
 **Viagens**
 - Listagem com filtro por data
 - Criação de viagem com motorista, placa e modelo do veículo
-- Sugestão automática de motorista via escala rotativa
-- Visão detalhada com todos os passageiros agendados
-- Controle de presença e status de retorno por agendamento
+- Sugestão automática de motorista via escala rotativa (Henrique ↔ Claudio)
+- Visão detalhada com todos os passageiros, controle de presença e retorno
 - Contador de vagas em tempo real (ex.: `5/28`)
+
+**Pacientes**
+- Listagem com busca por nome ou CPF
+- Cadastro com validação de CPF (algoritmo de dígitos verificadores)
+- Associação de acompanhante com ou sem ocupação de vaga
+- Prioridade Alta (oncológico) ou Normal
+- Geração de relatório PDF com histórico completo de viagens
 
 ---
 
-## Funcionalidades
+## Funcionalidades Implementadas
 
 | Código | Funcionalidade |
 |--------|---------------|
@@ -57,7 +64,7 @@ O sistema é dividido em duas telas principais:
 | FR-019 | Listar viagens com filtro por data, exibindo passageiros e seus status |
 | FR-020 | Gerar relatório PDF com histórico de viagens de um paciente |
 
-### Pontos de Embarque (lista fixa)
+### Pontos de Embarque (lista fixa — saída de Piripiri)
 
 SESAM · Praça da Bandeira · Sorveteria Cremosa · Memorial Espedito Resende · Vida Animal · Posto São Francisco · Posto Piripiri · Posto Petrolina · M. Sales · ELECNOR · Chico Jovem · Lili Doces · Entrada da Malhadinha · Capela da Várzea
 
@@ -76,7 +83,8 @@ CEIR · Hospital Policial · H.U. · São Marcos
 | Banco de dados | SQLite via better-sqlite3 | 9.4.3 |
 | Autenticação | express-session + bcryptjs | 1.18 / 2.4 |
 | Geração de PDF | pdfkit | 0.15 |
-| Frontend framework | React + React DOM | 18.3 |
+| Frontend framework | React + React DOM | 18.3.1 |
+| Ícones UI | lucide-react | 1.22 |
 | Roteamento SPA | react-router-dom | 6.24 |
 | HTTP client | axios | 1.7 |
 | Build tool | Vite | 5.3 |
@@ -87,16 +95,36 @@ CEIR · Hospital Policial · H.U. · São Marcos
 
 ## Pré-requisitos
 
-- **Node.js 20+** — [nodejs.org](https://nodejs.org)
-- **npm 9+** (incluído com Node.js)
+### Mac / Linux
+
+- **Node.js 20 LTS** — [nodejs.org](https://nodejs.org) ou via `nvm`:
+  ```bash
+  nvm install 20
+  nvm use 20
+  ```
+- **npm 9+** (incluído com Node.js 20)
 - Git
 
-Verifique a instalação:
-
+Verifique:
 ```bash
-node --version   # v20.x.x ou superior
+node --version   # v20.x.x
 npm --version    # 9.x.x ou superior
 ```
+
+### Windows
+
+> **Atenção**: `better-sqlite3` é um módulo nativo e requer ferramentas de compilação C++ no Windows.
+
+1. Instale o **Node.js 20 LTS** em [nodejs.org](https://nodejs.org)
+2. Abra o **PowerShell como Administrador** e execute:
+   ```powershell
+   npm install --global windows-build-tools
+   ```
+   Ou instale manualmente o **Visual Studio Build Tools** (componente "Desenvolvimento para Desktop com C++")
+3. Verifique a instalação:
+   ```powershell
+   node --version   # v20.x.x
+   ```
 
 ---
 
@@ -119,15 +147,16 @@ Este comando instala as dependências da raiz, do backend e do frontend em sequ�
 
 ### 3. Configure as variáveis de ambiente
 
-Crie o arquivo `backend/.env` com base no exemplo abaixo:
+Crie o arquivo `backend/.env`:
 
 ```env
 PORT=3001
 SESSION_SECRET=troque-por-uma-chave-secreta-forte-aqui
-ADMIN_SENHA=admin123
+ADMIN_LOGIN=admin
+ADMIN_PASSWORD=admin123
 ```
 
-> **Atenção**: Em produção, use uma `SESSION_SECRET` longa e aleatória. A `ADMIN_SENHA` é usada apenas no primeiro `db:setup` para criar o usuário administrador.
+> **Em produção**: use uma `SESSION_SECRET` longa e aleatória (mínimo 32 caracteres). `ADMIN_LOGIN` e `ADMIN_PASSWORD` são usados apenas no primeiro `db:setup`.
 
 ### 4. Inicialize o banco de dados
 
@@ -135,12 +164,11 @@ ADMIN_SENHA=admin123
 npm run db:setup
 ```
 
-Este comando executa o script de seed que:
-- Cria todas as tabelas (`usuarios`, `motoristas`, `pacientes`, `acompanhantes`, `viagens`, `agendamentos`)
-- Insere os dois motoristas padrão: **Henrique** e **Claudio**
-- Cria o usuário administrador com a senha definida em `ADMIN_SENHA`
+Este script cria todas as tabelas e insere:
+- **Motoristas padrão**: Henrique e Claudio
+- **Usuário administrador** com login/senha definidos no `.env`
 
-O banco de dados é criado em `backend/data/sesam.db`.
+O banco de dados é criado em `backend/data/sesam.db` (ignorado pelo git).
 
 ---
 
@@ -156,7 +184,7 @@ Inicia ambos os servidores em paralelo:
 - **Backend**: `http://localhost:3001`
 - **Frontend**: `http://localhost:5173`
 
-O Vite já está configurado com proxy: qualquer requisição para `/api` é encaminhada automaticamente para o backend na porta 3001.
+O Vite encaminha automaticamente requisições `/api` para o backend (configurado em `frontend/vite.config.js`).
 
 ### Rodando separadamente
 
@@ -170,14 +198,56 @@ cd frontend
 npm run dev
 ```
 
-### Acessando o sistema
+### Credenciais de acesso padrão
 
-Abra `http://localhost:5173` no navegador. Faça login com:
+Acesse `http://localhost:5173` e faça login com:
 
 | Campo | Valor padrão |
 |-------|-------------|
-| Usuário | `admin` |
-| Senha | valor de `ADMIN_SENHA` no `.env` (padrão: `admin123`) |
+| Usuário | valor de `ADMIN_LOGIN` no `.env` (padrão: `admin`) |
+| Senha | valor de `ADMIN_PASSWORD` no `.env` (padrão: `admin123`) |
+
+---
+
+## Rodando em Produção com Ngrok
+
+Para expor o sistema localmente via HTTPS (útil para testes em redes externas ou apresentações):
+
+### 1. Faça o build do frontend
+
+```bash
+cd frontend && npm run build
+```
+
+O backend serve o `frontend/dist/` diretamente em produção (single-server, sem separação de portas).
+
+### 2. Configure o `.env` para produção
+
+```env
+PORT=3001
+NODE_ENV=production
+SESSION_SECRET=sua-chave-secreta-muito-longa-e-aleatoria
+ADMIN_LOGIN=admin
+ADMIN_PASSWORD=senha-segura
+```
+
+> Com `NODE_ENV=production`, o cookie de sessão é configurado como `secure: true` e `sameSite: none`, necessários para funcionar via HTTPS (Ngrok).
+
+### 3. Inicie o backend
+
+```bash
+cd backend && npm start
+```
+
+### 4. Exponha com Ngrok
+
+```bash
+ngrok http 3001
+```
+
+O Ngrok fornece uma URL HTTPS (ex.: `https://xxxx.ngrok.io`). Acesse esta URL no navegador — o sistema estará disponível com HTTPS.
+
+> O backend serve o frontend buildado automaticamente via `express.static`. Não é necessário Vite em produção.
 
 ---
 
@@ -192,31 +262,34 @@ npm test
 ### Somente testes unitários
 
 ```bash
-cd backend
-npm run test:unit
+cd backend && npm run test:unit
 ```
 
 ### Somente testes de integração
 
 ```bash
-cd backend
-npm run test:integration
+cd backend && npm run test:integration
 ```
 
-### Cobertura de testes
+### Status atual dos testes
 
-Os testes cobrem as seguintes lógicas críticas:
+```
+Test Suites: 8 passed, 8 total
+Tests:       63 passed, 63 total
+```
 
-| Arquivo de teste | O que valida |
-|-----------------|-------------|
-| `tests/unit/cpf.test.js` | Algoritmo de validação CPF (formato + dígitos verificadores) |
-| `tests/unit/capacidade.test.js` | Cálculo e validação de vagas (paciente ± acompanhante) |
-| `tests/unit/estadoPresenca.test.js` | Máquina de estados de presença (Pendente → Presente/Faltou) |
-| `tests/unit/estadoRetorno.test.js` | Máquina de estados de retorno + pré-condição de presença |
-| `tests/unit/escalaRotativa.test.js` | Alternância de motoristas por viagem |
-| `tests/integration/pacientes.test.js` | CRUD de pacientes via API |
-| `tests/integration/viagens.test.js` | CRUD de viagens + validação de capacidade |
-| `tests/integration/agendamentos.test.js` | Agendamento, cancelamento e transições de estado |
+### Cobertura
+
+| Arquivo | O que valida |
+|---------|-------------|
+| `unit/cpf.test.js` | Algoritmo de validação CPF (formato + dígitos verificadores) |
+| `unit/capacidade.test.js` | Cálculo e validação de vagas (paciente ± acompanhante) |
+| `unit/estadoPresenca.test.js` | Máquina de estados de presença (Pendente → Presente/Faltou) |
+| `unit/estadoRetorno.test.js` | Máquina de estados de retorno + pré-condição de presença |
+| `unit/escalaRotativa.test.js` | Alternância de motoristas por viagem |
+| `integration/pacientes.test.js` | CRUD de pacientes via API |
+| `integration/viagens.test.js` | CRUD de viagens + validação de capacidade |
+| `integration/agendamentos.test.js` | Agendamento, cancelamento e transições de estado |
 
 ---
 
@@ -231,7 +304,7 @@ sesam-transportes-mvp/
 │   │   │   ├── pacientes.js         # CRUD /api/pacientes + relatório PDF
 │   │   │   ├── motoristas.js        # GET /api/motoristas (com sugestão de escala)
 │   │   │   ├── viagens.js           # CRUD /api/viagens
-│   │   │   ├── agendamentos.js      # POST/agendamentos aninhados em viagens
+│   │   │   ├── agendamentos.js      # POST agendamentos aninhados em viagens
 │   │   │   └── agendamentosRoot.js  # DELETE/PATCH em /api/agendamentos/:id
 │   │   ├── db/
 │   │   │   ├── index.js             # Inicialização da conexão SQLite
@@ -245,7 +318,7 @@ sesam-transportes-mvp/
 │   │   │   ├── viagemService.js     # Lógica: criação, capacidade, escala rotativa
 │   │   │   ├── agendamentoService.js# Lógica: agendamento, cancelamento, estados
 │   │   │   └── relatorioService.js  # Geração de PDF via pdfkit
-│   │   └── app.js                   # Express app: rotas, middlewares, CORS, session
+│   │   └── app.js                   # Express: CORS, session, rotas, static
 │   ├── tests/
 │   │   ├── unit/                    # Testes de lógica pura (sem banco)
 │   │   └── integration/             # Testes de API com banco em memória
@@ -257,15 +330,15 @@ sesam-transportes-mvp/
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── layout/
-│   │   │   │   └── AppShell.jsx        # Layout base com sidebar e navegação
+│   │   │   │   └── AppShell.jsx        # Sidebar + layout base
 │   │   │   ├── pacientes/
 │   │   │   │   ├── PacienteForm.jsx    # Formulário de cadastro e edição
 │   │   │   │   ├── PacienteLista.jsx   # Listagem com busca
-│   │   │   │   └── AcompanhanteForm.jsx# Formulário de acompanhante
+│   │   │   │   └── AcompanhanteForm.jsx
 │   │   │   ├── viagens/
 │   │   │   │   ├── ViagemForm.jsx      # Criar/editar viagem
 │   │   │   │   ├── ViagemLista.jsx     # Listagem com filtro por data
-│   │   │   │   └── ViagemDetalhe.jsx   # Passageiros + controle de presença
+│   │   │   │   └── ViagemDetalhe.jsx   # Passageiros + controle de presença/retorno
 │   │   │   └── agendamentos/
 │   │   │       └── AgendamentoForm.jsx # Agendar paciente em viagem
 │   │   ├── pages/
@@ -275,18 +348,19 @@ sesam-transportes-mvp/
 │   │   ├── services/
 │   │   │   └── api.js                  # Wrapper axios: base URL + interceptors
 │   │   └── main.jsx                    # Entry point React + roteamento
-│   ├── vite.config.js                  # Proxy /api → localhost:3001
+│   ├── vite.config.js                  # Proxy /api → localhost:3001 em dev
 │   └── package.json
 │
 ├── specs/
-│   └── 001-patient-transport-mgmt/    # Documentação de especificação do MVP
+│   └── 001-patient-transport-mgmt/    # Artefatos SDD do MVP
 │       ├── spec.md                    # Requisitos funcionais e user stories
-│       ├── plan.md                    # Plano de implementação e estrutura
-│       ├── research.md               # Decisões técnicas com rationale
-│       ├── data-model.md             # Entidades, relacionamentos, máquinas de estado
-│       ├── quickstart.md             # Guia de validação end-to-end
+│       ├── plan.md                    # Plano técnico e estrutura do projeto
+│       ├── research.md                # Decisões técnicas com rationale
+│       ├── data-model.md              # Entidades, relacionamentos, máquinas de estado
+│       ├── quickstart.md              # Guia de validação end-to-end
+│       ├── tasks.md                   # Tarefas atômicas ordenadas por dependência
 │       └── contracts/
-│           └── api.md                # Contratos REST completos
+│           └── api.md                 # Contratos REST completos com exemplos
 │
 ├── package.json                       # Scripts raiz: dev, test, db:setup, install:all
 ├── CLAUDE.md                          # Instruções para o agente de desenvolvimento
@@ -295,7 +369,7 @@ sesam-transportes-mvp/
 
 ---
 
-## Documentação da API
+## Endpoints da API
 
 **Base URL**: `http://localhost:3001/api`  
 **Autenticação**: Cookie de sessão (`connect.sid`). Todas as rotas exceto `/auth/login` exigem sessão ativa.  
@@ -307,15 +381,16 @@ sesam-transportes-mvp/
 |--------|------|-----------|
 | `POST` | `/auth/login` | Autentica e inicia sessão |
 | `POST` | `/auth/logout` | Encerra a sessão |
+| `GET` | `/auth/me` | Retorna usuário da sessão atual |
 
 ### Pacientes
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
 | `GET` | `/pacientes` | Lista pacientes (busca opcional: `?q=nome`) |
-| `GET` | `/pacientes/:id` | Retorna um paciente com acompanhante |
+| `GET` | `/pacientes/:id` | Retorna paciente com acompanhante |
 | `POST` | `/pacientes` | Cadastra novo paciente |
-| `PUT` | `/pacientes/:id` | Atualiza dados (CPF não pode ser alterado) |
+| `PUT` | `/pacientes/:id` | Atualiza dados (CPF imutável) |
 | `PUT` | `/pacientes/:id/acompanhante` | Cria ou atualiza acompanhante (upsert) |
 | `DELETE` | `/pacientes/:id/acompanhante` | Remove acompanhante |
 | `GET` | `/pacientes/:id/relatorio` | Gera e retorna PDF do histórico de viagens |
@@ -339,12 +414,12 @@ sesam-transportes-mvp/
 
 | Método | Rota | Descrição |
 |--------|------|-----------|
-| `POST` | `/viagens/:viagem_id/agendamentos` | Agenda paciente na viagem |
+| `POST` | `/viagens/:id/agendamentos` | Agenda paciente na viagem |
 | `DELETE` | `/agendamentos/:id` | Cancela agendamento (libera vagas) |
 | `PATCH` | `/agendamentos/:id/presenca` | Registra `Presente` ou `Faltou` |
 | `PATCH` | `/agendamentos/:id/retorno` | Registra status de retorno |
 
-#### Códigos de resposta relevantes
+#### Códigos de resposta
 
 | HTTP | Situação |
 |------|----------|
@@ -353,9 +428,9 @@ sesam-transportes-mvp/
 | `400` | Validação falhou (campo inválido, estado inválido) |
 | `401` | Não autenticado |
 | `404` | Recurso não encontrado |
-| `409` | Conflito: CPF duplicado, data de viagem duplicada, capacidade esgotada |
+| `409` | Conflito: CPF duplicado, data duplicada, capacidade esgotada |
 
-Para a especificação completa com exemplos de request/response, consulte [`specs/001-patient-transport-mgmt/contracts/api.md`](specs/001-patient-transport-mgmt/contracts/api.md).
+Especificação completa com exemplos: [`specs/001-patient-transport-mgmt/contracts/api.md`](specs/001-patient-transport-mgmt/contracts/api.md)
 
 ---
 
@@ -365,42 +440,27 @@ Arquivo: `backend/.env`
 
 | Variável | Obrigatória | Padrão | Descrição |
 |----------|-------------|--------|-----------|
-| `PORT` | Não | `3001` | Porta em que o servidor Express escuta |
-| `SESSION_SECRET` | **Sim** | — | Chave secreta para assinar o cookie de sessão. Use uma string longa e aleatória em produção. |
-| `ADMIN_SENHA` | Sim (apenas no `db:setup`) | — | Senha do usuário `admin` gerada no primeiro setup. Após o setup, pode ser removida do `.env`. |
-
-> O frontend não possui variáveis de ambiente — a URL da API é configurada via proxy do Vite em desenvolvimento e deve ser ajustada em `frontend/src/services/api.js` para produção.
-
----
-
-## Primeiro Login
-
-Após executar `npm run db:setup`:
-
-1. Acesse `http://localhost:5173`
-2. Entre com as credenciais:
-   - **Usuário**: `admin`
-   - **Senha**: valor definido em `ADMIN_SENHA` no `.env` (padrão de exemplo: `admin123`)
-3. O sistema redireciona para a listagem de viagens
-
-> O CPF não pode ser alterado após o cadastro. Para trocar CPF de um paciente, crie um novo registro.
+| `PORT` | Não | `3001` | Porta em que o backend escuta |
+| `NODE_ENV` | Não | — | Defina `production` para ativar cookie seguro (HTTPS) |
+| `SESSION_SECRET` | **Sim em produção** | `sesam-dev-secret` | Chave secreta para assinar o cookie de sessão |
+| `ADMIN_LOGIN` | Sim (apenas no `db:setup`) | — | Login do usuário administrador |
+| `ADMIN_PASSWORD` | Sim (apenas no `db:setup`) | — | Senha do usuário administrador |
 
 ---
 
-## Regras de Negócio Importantes
+## Regras de Negócio
 
 **Capacidade de vagas**
 - Cada agendamento consome 1 vaga (paciente)
-- Se o paciente tem acompanhante com `ocupa_vaga = true`, consome +1 vaga
-- Tentativas de ultrapassar 28 vagas são bloqueadas com erro `409`
+- Se o acompanhante tem `ocupa_vaga = true`, consome +1 vaga
+- Tentativas de ultrapassar 28 vagas retornam `409 Conflict`
 
 **Máquinas de estado**
 
-Presença:
+Presença (estados finais, sem reversão):
 ```
 Pendente → Presente
 Pendente → Faltou
-(estados finais — sem reversão)
 ```
 
 Retorno (pré-condição: presença = Presente):
@@ -411,26 +471,27 @@ Pendente → Voltou por Conta Própria
 ```
 
 **Escala rotativa de motoristas**
-- O sistema consulta a última viagem registrada e sugere o motorista oposto
-- Se não houver viagem anterior, sugere o motorista de menor ID (Henrique)
+- Consulta a última viagem registrada e sugere o motorista oposto
+- Sem viagem anterior: sugere Henrique (menor ID)
 
 **Cancelamento**
-- Agendamentos em viagens com data < hoje não podem ser cancelados
-- O cancelamento libera vagas imediatamente de forma transacional
+- Agendamentos em viagens passadas (data < hoje) não podem ser cancelados
+- O cancelamento libera vagas de forma transacional (sem inconsistência)
 
 ---
 
-## Metodologia de Desenvolvimento — Pipeline SDD/SpecKit
+## Metodologia — Pipeline SDD/SpecKit
 
-Este projeto foi desenvolvido utilizando o pipeline **Specification-Driven Development (SDD)** via **SpecKit**, uma metodologia que garante que cada linha de código rastreia diretamente um requisito especificado.
+Este projeto foi desenvolvido com **Specification-Driven Development (SDD)** via **SpecKit**, garantindo rastreabilidade completa entre requisitos e código.
 
-### As fases do pipeline
+### Pipeline de desenvolvimento
 
 ```
 /speckit-specify   →  /speckit-clarify   →  /speckit-plan
       ↓                                           ↓
-Especificação                             Plano técnico
-(spec.md)                                 (plan.md)
+  spec.md                               plan.md, research.md,
+  (user stories,                        data-model.md,
+   critérios de aceite)                 contracts/api.md
                                                ↓
                                       /speckit-tasks
                                            ↓
@@ -440,57 +501,52 @@ Especificação                             Plano técnico
                                            ↓
                                     Código gerado
                                            ↓
-                              /speckit-converge  (gap analysis)
-                                           ↓
-                                  /speckit-analyze (auditoria)
+                              /speckit-converge  (análise de gaps)
 ```
 
-### Artefatos gerados por fase
+### Fases e artefatos
 
 | Fase | Comando | Artefato | Propósito |
 |------|---------|----------|-----------|
-| Especificação | `/speckit-specify` | `spec.md` | Requisitos funcionais, user stories, critérios de aceitação |
+| Especificação | `/speckit-specify` | `spec.md` | Requisitos funcionais, user stories, critérios de aceite |
 | Clarificação | `/speckit-clarify` | `spec.md` (atualizado) | Resolve ambiguidades antes de planejar |
-| Planejamento | `/speckit-plan` | `plan.md`, `research.md`, `data-model.md`, `contracts/api.md` | Decisões técnicas, modelo de dados, contratos de API |
-| Tarefas | `/speckit-tasks` | `tasks.md` | Lista de tarefas atômicas ordenadas por dependência |
+| Planejamento | `/speckit-plan` | `plan.md` + `research.md` + `data-model.md` + `contracts/api.md` | Decisões técnicas, modelo de dados, contratos de API |
+| Tarefas | `/speckit-tasks` | `tasks.md` | Lista atômica de tarefas ordenadas por dependência |
 | Implementação | `/speckit-implement` | Código-fonte | Execução das tarefas |
 | Convergência | `/speckit-converge` | `tasks.md` (delta) | Identifica gaps entre spec e implementação |
-| Análise | `/speckit-analyze` | Relatório | Auditoria de consistência entre artefatos |
 
 ### Por que SDD?
 
 - **Rastreabilidade**: cada feature do código referencia um RF (ex.: `FR-014` → validação de capacidade)
-- **API-First**: os contratos de API são definidos *antes* da implementação (ver `contracts/api.md`)
-- **Test-Driven para lógica crítica**: validação de CPF, capacidade e máquinas de estado têm testes unitários escritos a partir da especificação
-- **Sem over-engineering**: a constituição do projeto impõe o princípio MVP-First — nenhuma abstração ou feature além do especificado
+- **API-First**: contratos de API definidos *antes* da implementação
+- **Test-Driven para lógica crítica**: validação de CPF, capacidade e máquinas de estado têm testes unitários derivados da especificação
+- **MVP-First**: a constituição do projeto impede abstrações além do especificado
 
-Toda a documentação de especificação vive em [`specs/001-patient-transport-mgmt/`](specs/001-patient-transport-mgmt/).
+Documentação completa em [`specs/001-patient-transport-mgmt/`](specs/001-patient-transport-mgmt/).
 
 ---
 
 ## Roadmap — Próximos Passos
 
-Funcionalidades fora do escopo do MVP atual, ordenadas por valor percebido:
-
 | Prioridade | Feature |
 |-----------|---------|
 | P1 | Autenticação multi-usuário com controle de acesso por função (admin, visualizador) |
 | P1 | Notificação por WhatsApp/SMS para lembrete de viagem ao paciente |
-| P2 | Dashboard com métricas: total de viagens no mês, taxa de presença, pacientes frequentes |
-| P2 | Histórico de edições de agendamentos (auditoria) |
-| P2 | Suporte mobile (layout responsivo) |
-| P3 | Exportação de listagem de passageiros para PDF/Excel no dia da viagem |
-| P3 | Cadastro de múltiplos veículos e associação por frota |
-| P3 | API pública para integração com outros sistemas da secretaria |
-| P4 | Deploy automatizado (Docker Compose + Nginx) |
+| P2 | Dashboard: total de viagens no mês, taxa de presença, pacientes frequentes |
+| P2 | Migração de dados históricos 2023+ para popular o banco |
+| P2 | Suporte a rotas de UBS: múltiplas origens além de Piripiri |
+| P2 | Layout responsivo para uso em tablets e celulares |
+| P3 | Exportação da lista de passageiros para PDF/Excel no dia da viagem |
+| P3 | Cadastro de múltiplos veículos por frota |
+| P4 | Deploy automatizado com Docker Compose + Nginx |
 | P4 | Backup automático do banco SQLite |
 
 ---
 
 ## Licença
 
-Este projeto está licenciado sob a **Licença MIT**. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+Este projeto está licenciado sob a **Licença MIT**.
 
 ---
 
-Desenvolvido para a **SESAM — Secretaria Municipal de Saúde**
+Desenvolvido para a **SESAM — Secretaria Municipal de Saúde · Piripiri, Piauí**
