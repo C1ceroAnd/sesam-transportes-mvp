@@ -73,7 +73,7 @@ CEIR · Hospital Policial · H.U. · São Marcos
 |--------|-----------|--------|
 | Runtime | Node.js | 20 LTS |
 | Backend framework | Express | 4.19 |
-| Banco de dados | SQLite via better-sqlite3 | 9.6 |
+| Banco de dados | SQLite via better-sqlite3 | 9.4.3 |
 | Autenticação | express-session + bcryptjs | 1.18 / 2.4 |
 | Geração de PDF | pdfkit | 0.15 |
 | Frontend framework | React + React DOM | 18.3 |
