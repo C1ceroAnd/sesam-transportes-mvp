@@ -1,17 +1,11 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Bus } from 'lucide-react';
 import { auth } from '../../services/api';
 import { useAuth } from '../../main';
 
 function IconBus() {
-  return (
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="5" width="18" height="14" rx="2"/>
-      <path d="M3 10h18M8 19v2M16 19v2"/>
-      <circle cx="8" cy="15" r="1.2" fill="currentColor" stroke="none"/>
-      <circle cx="16" cy="15" r="1.2" fill="currentColor" stroke="none"/>
-    </svg>
-  );
+  return <Bus size={17} strokeWidth={2} />;
 }
 
 function IconUsers() {
@@ -69,12 +63,7 @@ export default function AppShell({ children }) {
               background: 'linear-gradient(135deg, #2E5FA3 0%, #0D9488 100%)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round">
-                <rect x="3" y="5" width="18" height="14" rx="2"/>
-                <path d="M3 10h18"/>
-                <circle cx="8" cy="15" r="1.2" fill="#fff" stroke="none"/>
-                <circle cx="16" cy="15" r="1.2" fill="#fff" stroke="none"/>
-              </svg>
+              <Bus size={20} color="#fff" strokeWidth={2.2} />
             </div>
             <div style={{ minWidth: 0 }}>
               <div style={{ fontWeight: 800, fontSize: 15, color: '#0F172A', lineHeight: '1.15' }}>SESAM</div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Bus } from 'lucide-react';
 import { auth } from '../services/api';
 import { useAuth } from '../main';
 
@@ -65,12 +66,7 @@ export default function LoginPage() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             margin: '0 auto 16px',
           }}>
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round">
-              <rect x="3" y="5" width="18" height="14" rx="2"/>
-              <path d="M3 10h18"/>
-              <circle cx="8" cy="15" r="1.3" fill="#fff" stroke="none"/>
-              <circle cx="16" cy="15" r="1.3" fill="#fff" stroke="none"/>
-            </svg>
+            <Bus size={26} color="#fff" strokeWidth={2} />
           </div>
           <h1 style={{ margin: 0, fontSize: 20, fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>
             SESAM Transportes
