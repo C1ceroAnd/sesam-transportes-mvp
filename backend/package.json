@@ -12,7 +12,8 @@
     "test": "jest",
     "test:unit": "jest tests/unit",
     "test:integration": "jest tests/integration",
-    "db:setup": "node src/db/seed.js"
+    "db:setup": "node src/db/seed.js",
+    "build:full": "cd ../frontend && npm run build"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

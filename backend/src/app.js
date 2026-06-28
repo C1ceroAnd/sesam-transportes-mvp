@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
+const path = require('path');
 
 if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) {
   throw new Error('SESSION_SECRET env var is required in production');
@@ -38,6 +39,12 @@ app.use('/api/pacientes', pacientesRoutes);
 app.use('/api/motoristas', motoristasRoutes);
 app.use('/api/viagens', viagensRoutes);
 app.use('/api/agendamentos', agendamentosRootRoutes);
+
+const distPath = path.join(__dirname, '../../frontend/dist');
+app.use(express.static(distPath));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
 
 app.use((err, req, res, next) => {
   console.error(err);
